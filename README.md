@@ -1,4 +1,8 @@
-# Kringlecon Elfscrow solution
+# Elfscrow Decryption - solution in Go
+
+## Intro
+
+This small repo contains my go code for solving the Elfscro file decryption challenge of the KringleCon II as part of SANS Holiday Hack Challenge in 2019.
 
 ## Usage
 

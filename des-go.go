@@ -43,7 +43,7 @@ func main() {
 	}
 
 	// given start and end timestamps in UNIX epoch
-	start := 1575663700 //1575666000
+	start := 1575666000 //
 	end := 1575658800
 
 	// null IV
@@ -59,8 +59,8 @@ func main() {
 		plainText, _ := decryptDESCBC(key, IV, fileToDecrypt)
 
 		// if first 4 characters match %PDF
-		if string(plainText[:4]) == "%PDF" {
-			fmt.Printf("Key: %x - Time: %d - FILE: %s\n", key, time, string(plainText[:4]))
+		if string(plainText[:4]) == `%PDF` {
+			fmt.Printf("Key-Used: %x - TimeStamp: %d - First-4-Chars: %s...\n", key, time, string(plainText[:4]))
 			ioutil.WriteFile("ElfUResearchLabsSuperSledOMaticQuickStartGuideV1.2.pdf", plainText, 0644)
 			break
 		}

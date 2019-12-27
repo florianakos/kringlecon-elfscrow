@@ -17,3 +17,8 @@ On every iteration of the loop counter a specific UNIX timestamp between 7-9 pm 
 If the resulting plain-text starts with %PDF then we save it and exit, knowing that we found the decrypted file contents that translate to a valid pdf. 
 
 The file was encrypted on 12/06/2019 @ 8:20pm (UTC) - 1575663650.
+
+## Credits
+
+For the original skeleton code for DES-CBC implementation in GO:
+https://stackoverflow.com/questions/41579325/golang-how-do-i-decrypt-with-des-cbc-and-pkcs7

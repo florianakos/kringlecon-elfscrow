@@ -1,5 +1,7 @@
 # Elfscrow Decryption - solution in Go
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/florianakos/kringlecon-elfscrow)](https://goreportcard.com/report/github.com/florianakos/kringlecon-elfscrow)
+
 ## Intro
 
 This small repo contains my go code for solving the Elfscro file decryption challenge of the KringleCon II as part of SANS Holiday Hack Challenge in 2019.

@@ -17,22 +17,37 @@ func decryptDESCBC(key, IV, cipherText []byte) ([]byte, error) {
 	return origData, nil
 }
 
-// func to generate the key for given seed
-func generateKeyFromSeed(seed int) []byte {
-	key_b := seed
-	var key []byte
-	for i := 0; i < 8; i += 1 {
-		key_b = key_b*0x343fd + 0x269ec3
-		tmp_val := fmt.Sprintf("%X", key_b>>0x10&0x7fff)
-		if len(tmp_val) < 2 {
-			tmp_val = "0" + tmp_val
-		}
-		val := tmp_val[len(tmp_val)-2:]
-		val_hex := make([]byte, hex.DecodedLen(len(val)))
-		hex.Decode(val_hex, []byte(val))
-		key = append(key, val_hex[0])
-	}
-	return key
+// basic linear congruential generator
+func lcg(a, c, m, seed uint32) func() uint32 {
+    r := seed
+    return func() uint32 {
+        r = (a*r + c) % m
+        return r
+    }
+}
+
+// microsoft generator has extra division step
+func msg(seed uint32) func() uint32 {
+    g := lcg(214013, 2531011, 1<<31, seed)
+    return func() uint32 {
+        return g() / (1 << 16)
+    }
+}
+
+// LCG implt with rosetta, modified to work with this objective
+func generateKeyFromSeed(seed uint32) []byte {
+    var key []byte
+    msf := msg(seed)
+    for i := 0; i < 8; i++ {
+        randHex := fmt.Sprintf("%x", msf()) // >> 0x10 & 0x7fff)
+    		if len(randHex) < 2 {
+    			randHex = "0" + randHex
+    		}
+    		valHex2Bytes := make([]byte, hex.DecodedLen(len(randHex[len(randHex)-2:])))
+    		hex.Decode(valHex2Bytes, []byte(randHex[len(randHex)-2:]))
+    		key = append(key, valHex2Bytes[0])
+    }
+    return key
 }
 
 func main() {
@@ -43,8 +58,8 @@ func main() {
 	}
 
 	// given start and end timestamps in UNIX epoch
-	start := 1575666000 //
-	end := 1575658800
+	var start uint32 = 1575666000 //
+	var end   uint32 = 1575658800
 
 	// null IV
 	IV := []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
